@@ -14,9 +14,9 @@ class CPU:
         # 256 RAM
         self.ram = [0] * 256
         # Internal Register
-        # self.ir = 0
-        # # Stack Pointer
-        # self.sp = 7
+        self.ir = 0
+        # Stack Pointer
+        self.sp = 7
 
     
     # RAM Read
@@ -66,7 +66,7 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
-        elif op == "SUB": etc
+        # elif op == "SUB": etc
         if op == 'OR':
             if reg_a == 1 and reg_b == 0:
                 return True
@@ -76,7 +76,7 @@ class CPU:
                 return True
             else:
                 return False
-        
+
         if op == 'XOR':
             if reg_a == 1 and reg_b == 0:
                 return True
@@ -120,6 +120,9 @@ class CPU:
         LDI = 0b10000010
         PRN = 0b01000111
         MUL = 0b10100010
+        PUSH = 0b01000101
+        POP = 0b01000110
+
         running = True
 
         while running:
@@ -129,7 +132,7 @@ class CPU:
             if instruction == HLT:
                 running = False
                 self.pc += 1
-                sys.exit(0)
+                sys.exit()
             elif instruction == LDI:
                 self.reg[reg_a] = reg_b
                 self.pc += 3
@@ -139,7 +142,21 @@ class CPU:
             elif instruction == MUL:
                 print(self.reg[reg_a] * self.reg[reg_b])
                 self.pc += 3
+
+            elif instruction == PUSH:
+                reg = self.ram[self.pc+1]
+                val = self.reg[reg]
+                self.reg[self.sp] -= 1
+                self.ram[self.reg[self.sp]] = val
+                self.pc += 2
+
+            elif instruction == POP:
+                reg = self.ram[self.pc+1]
+                val = self.ram[self.reg[self.sp]]
+                self.reg[reg] = val
+                self.reg[self.sp] += 1
+                self.pc += 2  
             else:
                 print(f'This instruction is not valid: {hex(instruction)}')
                 running = False
-                sys.exit(1)            
+                sys.exit()            
