@@ -29,36 +29,36 @@ class CPU:
         # Memory Data Register
         self.ram[mar] = mdr
 
-    def load(self):
+    def load(self, prog):
         """Load a program into memory."""
 
         address = 0
-        # with open(prog) as program:
-        #     for instruction in program:
-        #         instruction_split = instruction.split('#')
-        #         instruction_stripped = instruction_split[0].strip()
+        with open(prog) as program:
+            for instruction in program:
+                instruction_split = instruction.split('#')
+                instruction_stripped = instruction_split[0].strip()
 
-        #         if instruction_stripped == '':
-        #             continue
-        #         instruction_num = int(instruction_stripped, 2)
-        #         self.ram_write(instruction_num, address)
-        #         address += 1
+                if instruction_stripped == '':
+                    continue
+                instruction_num = int(instruction_stripped, 2)
+                self.ram_write(instruction_num, address)
+                address += 1
 
         # For now, we've just hardcoded a program:
 
-        program = [
-            # From print8.ls8
-            0b10000010, # LDI R0,8
-            0b00000000,
-            0b00001000,
-            0b01000111, # PRN R0
-            0b00000000,
-            0b00000001, # HLT
-        ]
+        # program = [
+        #     # From print8.ls8
+        #     0b10000010, # LDI R0,8
+        #     0b00000000,
+        #     0b00001000,
+        #     0b01000111, # PRN R0
+        #     0b00000000,
+        #     0b00000001, # HLT
+        # ]
 
-        for instruction in program:
-            self.ram[address] = instruction
-            address += 1
+        # for instruction in program:
+        #     self.ram[address] = instruction
+        #     address += 1
 
 
     def alu(self, op, reg_a, reg_b):
@@ -66,30 +66,30 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
-        #elif op == "SUB": etc
-        # if op == 'OR':
-        #     if reg_a == 1 and reg_b == 0:
-        #         return True
-        #     elif reg_a == 0 and reg_b == 1:
-        #         return True
-        #     elif reg_a == 1 and reg_b == 1:
-        #         return True
-        #     else:
-        #         return False
+        elif op == "SUB": etc
+        if op == 'OR':
+            if reg_a == 1 and reg_b == 0:
+                return True
+            elif reg_a == 0 and reg_b == 1:
+                return True
+            elif reg_a == 1 and reg_b == 1:
+                return True
+            else:
+                return False
         
-        # if op == 'XOR':
-        #     if reg_a == 1 and reg_b == 0:
-        #         return True
-        #     if reg_a == 0 and reg_b == 1:
-        #         return True
-        #     else:
-        #         return False
+        if op == 'XOR':
+            if reg_a == 1 and reg_b == 0:
+                return True
+            if reg_a == 0 and reg_b == 1:
+                return True
+            else:
+                return False
 
-        # if op == 'NOR':
-        #     if reg_a == 0 and reg_b == 0:
-        #         return True
-        #     else:
-        #         return False
+        if op == 'NOR':
+            if reg_a == 0 and reg_b == 0:
+                return True
+            else:
+                return False
 
         else:
             raise Exception("Unsupported ALU operation")
