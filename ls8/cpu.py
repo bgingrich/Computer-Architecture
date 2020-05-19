@@ -66,6 +66,8 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
+        if op == "MUL":
+            self.reg[reg_a] *= self.reg[reg_b]
         # elif op == "SUB": etc
         if op == 'OR':
             if reg_a == 1 and reg_b == 0:
@@ -137,7 +139,7 @@ class CPU:
                 self.reg[reg_a] = reg_b
                 self.pc += 3
             elif instruction == PRN:
-                print(self.reg[reg_a])
+                # print(self.reg[reg_a])
                 self.pc += 2
             elif instruction == MUL:
                 print(self.reg[reg_a] * self.reg[reg_b])
