@@ -139,19 +139,17 @@ class CPU:
                 self.reg[reg_a] = reg_b
                 self.pc += 3
             elif instruction == PRN:
-                # print(self.reg[reg_a])
+                print(self.reg[reg_a])
                 self.pc += 2
             elif instruction == MUL:
-                print(self.reg[reg_a] * self.reg[reg_b])
+                self.reg[reg_a] = self.reg[reg_a] * self.reg[reg_b]
                 self.pc += 3
-
             elif instruction == PUSH:
                 reg = self.ram[self.pc+1]
                 val = self.reg[reg]
                 self.reg[self.sp] -= 1
                 self.ram[self.reg[self.sp]] = val
                 self.pc += 2
-
             elif instruction == POP:
                 reg = self.ram[self.pc+1]
                 val = self.ram[self.reg[self.sp]]
