@@ -84,15 +84,7 @@ class CPU:
             return self._jmp(reg_a, 0)
 
     def _cmp(self, reg_a, reg_b):
-        val_a = self.reg[reg_a]
-        val_b = self.reg[reg_b]
-
-        if val_a == val_b:
-            self.reg[self.fl] = 1
-        elif val_a > val_b:
-            self.reg[self.fl] = 2
-        else:
-            self.reg[self.fl] = 4
+        self.alu('CMP', self.ram[self.pc + 1], self.ram[self.pc +2])
     
     # RAM Read
     def ram_read(self, mar):
@@ -136,40 +128,48 @@ class CPU:
         #     address += 1
 
 
-    # def alu(self, op, reg_a, reg_b):
-    #     """ALU operations."""
+    def alu(self, op, reg_a, reg_b):
+        """ALU operations."""
 
-        # if op == "ADD":
-        #     self.reg[reg_a] += self.reg[reg_b]
-        # if op == "MUL":
-        #     self.reg[reg_a] *= self.reg[reg_b]
-        # # elif op == "SUB": etc
-        # if op == 'OR':
-        #     if reg_a == 1 and reg_b == 0:
-        #         return True
-        #     elif reg_a == 0 and reg_b == 1:
-        #         return True
-        #     elif reg_a == 1 and reg_b == 1:
-        #         return True
-        #     else:
-        #         return False
+        if op == "ADD":
+            self.reg[reg_a] += self.reg[reg_b]
+        if op == "MUL":
+            self.reg[reg_a] *= self.reg[reg_b]
+        # elif op == "SUB": etc
+        if op == 'OR':
+            if reg_a == 1 and reg_b == 0:
+                return True
+            elif reg_a == 0 and reg_b == 1:
+                return True
+            elif reg_a == 1 and reg_b == 1:
+                return True
+            else:
+                return False
 
-        # if op == 'XOR':
-        #     if reg_a == 1 and reg_b == 0:
-        #         return True
-        #     if reg_a == 0 and reg_b == 1:
-        #         return True
-        #     else:
-        #         return False
+        if op == 'XOR':
+            if reg_a == 1 and reg_b == 0:
+                return True
+            if reg_a == 0 and reg_b == 1:
+                return True
+            else:
+                return False
 
-        # if op == 'NOR':
-        #     if reg_a == 0 and reg_b == 0:
-        #         return True
-        #     else:
-        #         return False
+        if op == 'NOR':
+            if reg_a == 0 and reg_b == 0:
+                return True
+            else:
+                return False
+        
+        elif op == 'CMP':
+            if self.reg[reg_a] == self.reg[reg_b]:
+                self.reg[self.fl] = 1
+            elif self.reg[reg_a] > self.reg[reg_b]:
+                self.reg[self.fl] = 2
+            else:
+                self.reg[self.fl] = 4
 
-        # else:
-        #     raise Exception("Unsupported ALU operation")
+        else:
+            raise Exception("Unsupported ALU operation")
 
     def trace(self):
         """
